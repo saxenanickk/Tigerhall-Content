@@ -18,4 +18,4 @@ const Search = () => (
   </View>
 );
 
-export default Search;
+export {Search};
