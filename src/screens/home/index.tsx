@@ -7,6 +7,8 @@ import {Search} from '../../components/search';
 import {GET_CONTENT_CARDS_QUERY} from '../../data';
 import {useQuery} from '@apollo/client';
 import {debounce} from 'lodash';
+import {ErrorView} from '../../components/errorView';
+import {EmptyView} from '../../components/emptyView';
 
 const ItemSeparatorComponent: FC = () => <View style={{height: hScale(10)}} />;
 
@@ -53,7 +55,6 @@ const Home: FC = () => {
   };
 
   const onEndReached = () => {
-    console.log(totalRef.current, offsetRef.current);
     if (totalRef.current > offsetRef.current + limit) {
       offsetRef.current = offsetRef.current + limit;
       fetchMore({
@@ -78,29 +79,26 @@ const Home: FC = () => {
     }
   };
 
-  if (loading) {
-    //
-  }
-
-  if (error) {
-    //
-  }
-
   const setValue = debounce(setSearchKeywords, 300);
 
   return (
     <View style={styles.container}>
       <Search onChangeText={text => setValue(text)} />
-      <FlatList
-        ListFooterComponent={loading ? <ActivityIndicator /> : null}
-        ItemSeparatorComponent={ItemSeparatorComponent}
-        contentContainerStyle={styles.listContentContainerStyle}
-        data={data?.contentCards?.edges}
-        renderItem={renderItem}
-        onEndReached={onEndReached}
-        onEndReachedThreshold={0.5}
-        keyExtractor={item => item?.id}
-      />
+      {error ? (
+        <ErrorView />
+      ) : (
+        <FlatList
+          ListEmptyComponent={!loading ? EmptyView : null}
+          ListFooterComponent={loading ? <ActivityIndicator /> : null}
+          ItemSeparatorComponent={ItemSeparatorComponent}
+          contentContainerStyle={styles.listContentContainerStyle}
+          data={data?.contentCards?.edges}
+          renderItem={renderItem}
+          onEndReached={onEndReached}
+          onEndReachedThreshold={0.5}
+          keyExtractor={item => item?.id}
+        />
+      )}
     </View>
   );
 };

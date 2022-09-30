@@ -1,5 +1,6 @@
 import {Text, Platform, TextProps, ColorValue} from 'react-native';
 import React from 'react';
+import {Colors} from '../../utils';
 
 interface Props extends TextProps {
   children?: React.ReactNode;
@@ -22,7 +23,7 @@ interface Props extends TextProps {
 
 const TigerhallText: React.FC<Props> = ({
   children,
-  color,
+  color = Colors.WHITE,
   weight,
   size,
   ...restProps

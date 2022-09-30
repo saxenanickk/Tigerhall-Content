@@ -6,6 +6,8 @@ const Colors = {
   WHITE: '#FFFFFF',
   LIGHT_BLACK: '#333333',
   GREY: '#989898',
+  ERROR: '#ff0000',
+  WARNING: '#FFFF00',
 };
 
 export {Colors};
