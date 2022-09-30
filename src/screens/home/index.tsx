@@ -1,4 +1,4 @@
-import React, {FC, useRef, useState} from 'react';
+import React, {FC, useEffect, useRef, useState} from 'react';
 import {ActivityIndicator, FlatList, ListRenderItem, View} from 'react-native';
 import {styles} from './styles';
 import ContentCard from '../../components/contentCard';
@@ -13,6 +13,7 @@ const Home: FC = () => {
   const [searchKeywords, setSearchKeywords] = useState('');
   const limit = 5;
   const offsetRef = useRef(0);
+  const totalRef = useRef(0);
   const {loading, error, data, fetchMore} = useQuery(GET_CONTENT_CARDS_QUERY, {
     variables: {
       offset: 0,
@@ -20,6 +21,12 @@ const Home: FC = () => {
       keywords: searchKeywords,
     },
   });
+
+  useEffect(() => {
+    if (data && totalRef.current === 0) {
+      totalRef.current = data?.contentCards?.meta?.total;
+    }
+  }, [data]);
 
   const renderItem: ListRenderItem<any> | null | undefined = ({item}) => {
     const {
@@ -45,25 +52,29 @@ const Home: FC = () => {
   };
 
   const onEndReached = () => {
-    offsetRef.current = offsetRef.current + limit;
-    fetchMore({
-      variables: {
-        offset: offsetRef.current,
-      },
-      updateQuery: (prev, {fetchMoreResult}) => {
-        if (!fetchMoreResult) {
-          return prev;
-        }
-        return Object.assign({}, prev, {
-          contentCards: {
-            edges: [
-              ...prev.contentCards.edges,
-              ...fetchMoreResult.contentCards.edges,
-            ],
-          },
-        });
-      },
-    });
+    if (totalRef.current > offsetRef.current) {
+      offsetRef.current = offsetRef.current + limit;
+      fetchMore({
+        variables: {
+          offset: offsetRef.current,
+        },
+        updateQuery: (prev, {fetchMoreResult}) => {
+          if (!fetchMoreResult) {
+            return prev;
+          }
+          totalRef.current = fetchMoreResult?.contentCards?.meta?.total;
+          return Object.assign({}, prev, {
+            contentCards: {
+              edges: [
+                ...prev.contentCards.edges,
+                ...fetchMoreResult.contentCards.edges,
+              ],
+              meta: fetchMoreResult.contentCards.meta,
+            },
+          });
+        },
+      });
+    }
   };
 
   if (loading) {

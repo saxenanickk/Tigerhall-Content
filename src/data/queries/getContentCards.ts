@@ -29,6 +29,10 @@ const GET_CONTENT_CARDS_QUERY = gql`
           }
         }
       }
+      meta {
+        offset
+        total
+      }
     }
   }
 `;
