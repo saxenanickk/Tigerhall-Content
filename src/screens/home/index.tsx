@@ -6,6 +6,7 @@ import {hScale} from '../../utils';
 import {Search} from '../../components/search';
 import {GET_CONTENT_CARDS_QUERY} from '../../data';
 import {useQuery} from '@apollo/client';
+import {debounce} from 'lodash';
 
 const ItemSeparatorComponent: FC = () => <View style={{height: hScale(10)}} />;
 
@@ -23,7 +24,7 @@ const Home: FC = () => {
   });
 
   useEffect(() => {
-    if (data && totalRef.current === 0) {
+    if (data) {
       totalRef.current = data?.contentCards?.meta?.total;
     }
   }, [data]);
@@ -52,7 +53,8 @@ const Home: FC = () => {
   };
 
   const onEndReached = () => {
-    if (totalRef.current > offsetRef.current) {
+    console.log(totalRef.current, offsetRef.current);
+    if (totalRef.current > offsetRef.current + limit) {
       offsetRef.current = offsetRef.current + limit;
       fetchMore({
         variables: {
@@ -62,7 +64,6 @@ const Home: FC = () => {
           if (!fetchMoreResult) {
             return prev;
           }
-          totalRef.current = fetchMoreResult?.contentCards?.meta?.total;
           return Object.assign({}, prev, {
             contentCards: {
               edges: [
@@ -85,12 +86,11 @@ const Home: FC = () => {
     //
   }
 
+  const setValue = debounce(setSearchKeywords, 300);
+
   return (
     <View style={styles.container}>
-      <Search
-        value={searchKeywords}
-        onChangeText={text => setSearchKeywords(text)}
-      />
+      <Search onChangeText={text => setValue(text)} />
       <FlatList
         ListFooterComponent={loading ? <ActivityIndicator /> : null}
         ItemSeparatorComponent={ItemSeparatorComponent}

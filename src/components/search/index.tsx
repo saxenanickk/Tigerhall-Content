@@ -6,11 +6,10 @@ import {styles} from './styles';
 import {strings} from '../../data/strings/en';
 
 interface Props {
-  value: string | undefined;
   onChangeText?: ((text: string) => void) | undefined;
 }
 
-const Search: FC<Props> = ({value, onChangeText}) => (
+const Search: FC<Props> = ({onChangeText}) => (
   <View style={styles.container}>
     <TigerhallText color={Colors.WHITE} size={hScale(14)} weight={'700'}>
       {strings.search}
@@ -20,7 +19,6 @@ const Search: FC<Props> = ({value, onChangeText}) => (
       placeholderTextColor={Colors.GREY}
       cursorColor={Colors.WHITE}
       placeholder={strings.type_any_keyword}
-      value={value}
       onChangeText={onChangeText}
     />
   </View>
