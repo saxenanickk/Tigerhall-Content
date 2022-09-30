@@ -1,10 +1,10 @@
 import {StyleSheet} from 'react-native';
-import {wScale} from '../../utils';
+import {Colors, wScale} from '../../utils';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#001315',
+    backgroundColor: Colors.DARK_TEAL,
   },
   listContentContainerStyle: {
     width: '100%',

@@ -4,6 +4,7 @@ import {Expert} from '../../data/typings';
 import {TigerhallText} from '../tigerhallText';
 import {styles} from './styles';
 import FastImage from 'react-native-fast-image';
+import {Colors} from '../../utils';
 
 interface Props {
   image?: string;
@@ -37,20 +38,22 @@ const ContentCard: React.FC<Props> = ({
         style={styles.image}
       />
       <View style={styles.content}>
-        <TigerhallText color={'#FF8615'} weight={'700'} size={12}>
+        <TigerhallText color={Colors.ORANGE} weight={'700'} size={12}>
           {category.toUpperCase()}
         </TigerhallText>
-        <TigerhallText size={18} weight={'700'}>
+        <TigerhallText color={Colors.BLACK} size={18} weight={'700'}>
           {title.toUpperCase()}
         </TigerhallText>
         <TigerhallText
+          color={Colors.LIGHT_BLACK}
           weight={'600'}
           size={14}>{`${expert?.firstName} ${expert?.lastName}`}</TigerhallText>
         <TigerhallText
+          color={Colors.LIGHT_BLACK}
           weight={'600'}
           size={14}>{`${expert?.title.toUpperCase()}`}</TigerhallText>
         <TigerhallText
-          color={'#FF8615'}
+          color={Colors.ORANGE}
           weight={'600'}
           size={14}>{`${expert?.company}`}</TigerhallText>
       </View>

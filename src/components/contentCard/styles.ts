@@ -1,5 +1,5 @@
 import {StyleSheet} from 'react-native';
-import {hScale, wScale} from '../../utils';
+import {Colors, hScale, wScale} from '../../utils';
 
 const styles = StyleSheet.create({
   container: {
@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 5,
   },
   content: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: Colors.WHITE,
     borderBottomLeftRadius: wScale(5),
     borderBottomRightRadius: wScale(5),
     padding: wScale(12),
