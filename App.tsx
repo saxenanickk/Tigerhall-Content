@@ -1,22 +1,23 @@
+import {ApolloProvider} from '@apollo/client';
 import React from 'react';
-import {SafeAreaView, StatusBar, Text, useColorScheme} from 'react-native';
+import {SafeAreaView, StatusBar, StyleSheet} from 'react-native';
+import {client} from './src/data';
 
 const App = () => {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? '#000000' : '#ffffff',
-  };
-
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <Text>Tigerhall Content</Text>
-    </SafeAreaView>
+    <ApolloProvider client={client}>
+      <SafeAreaView style={styles.container}>
+        <StatusBar barStyle={'light-content'} backgroundColor={'#001315'} />
+      </SafeAreaView>
+    </ApolloProvider>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#001315',
+  },
+});
 
 export default App;
