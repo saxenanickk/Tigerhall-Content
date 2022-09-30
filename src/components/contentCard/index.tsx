@@ -1,8 +1,9 @@
-import {View, Image} from 'react-native';
+import {View} from 'react-native';
 import React from 'react';
 import {Expert} from '../../data/typings';
 import {TigerhallText} from '../tigerhallText';
 import {styles} from './styles';
+import FastImage from 'react-native-fast-image';
 
 interface Props {
   image?: string;
@@ -12,19 +13,29 @@ interface Props {
 }
 
 const ContentCard: React.FC<Props> = ({
-  image = 'https://images.prod.tigerhall.io/2022-05-05/724d53c0-eb60-4b31-b174-e8bc337d4748.jpg',
-  category = 'category Christina Beer',
-  title = 'audio by Aylin',
+  image = '',
+  category = '',
+  title = '',
   expert = {
-    firstName: 'Lester',
-    lastName: 'Reichert',
-    title: 'expert title',
-    company: 'company name test',
+    firstName: '',
+    lastName: '',
+    title: '',
+    company: '',
   },
 }) => {
+  const imageBase = 'https://images.prod.tigerhall.io/';
+
+  const optimisedImage = imageBase.concat(
+    ...['resize/250x/', image?.split(imageBase)[1]],
+  );
+
   return (
     <View style={styles.container}>
-      <Image source={{uri: image}} style={styles.image} resizeMode={'cover'} />
+      <FastImage
+        source={{uri: optimisedImage}}
+        resizeMode={'cover'}
+        style={styles.image}
+      />
       <View style={styles.content}>
         <TigerhallText color={'#FF8615'} weight={'700'} size={12}>
           {category.toUpperCase()}
@@ -47,4 +58,4 @@ const ContentCard: React.FC<Props> = ({
   );
 };
 
-export {ContentCard};
+export default React.memo(ContentCard);
